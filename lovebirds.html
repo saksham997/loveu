@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            margin: 10px;
+            cursor: pointer;
+            transition: left 0.2s ease, top 0.2s ease; /* Faster transition for position */
+            position: absolute; /* Position absolute for smooth movement */
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Do You Love Me?</h1>
+        <button id="yesButton">Yes</button>
+        <button id="noButton">No</button>
+        <div id="response" class="hidden"></div>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const responseDiv = document.getElementById('response');
+
+        yesButton.onclick = function() {
+            responseDiv.textContent = "Love you too!";
+            responseDiv.classList.remove('hidden');
+            yesButton.disabled = true;
+            noButton.disabled = true;
+        };
+
+        // Function to move the button randomly
+        function moveButton() {
+            const buttonWidth = noButton.offsetWidth;
+            const buttonHeight = noButton.offsetHeight;
+            const maxX = window.innerWidth - buttonWidth - 20; // 20 for some padding
+            const maxY = window.innerHeight - buttonHeight - 20; // 20 for some padding
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            // Move the button smoothly to the new position
+            noButton.style.left = randomX + 'px';
+            noButton.style.top = randomY + 'px';
+        }
+
+        // Move the button when the cursor is near
+        document.addEventListener('mousemove', (event) => {
+            const buttonRect = noButton.getBoundingClientRect();
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            // Check if the cursor is within a certain distance from the button
+            const distanceX = Math.abs(mouseX - (buttonRect.left + buttonRect.width / 2));
+            const distanceY = Math.abs(mouseY - (buttonRect.top + buttonRect.height / 2));
+            const threshold = 100; // Distance threshold
+
+            if (distanceX < threshold && distanceY < threshold) {
+                moveButton();
+            }
+        });
+
+        // Move button on initial load to position it
+        moveButton();
+    </script>
+</body>
+</html>
